@@ -4,50 +4,37 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-const Category = () => {
-  const [category, setCategory] = React.useState("");
-  const [productsCategory, setProductsCategory] = React.useState<string[]>([]);
-
-  React.useEffect(() => {
-    fetch("http://localhost:4444/getCategory", {
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        setProductsCategory(result.productsCategory);
-      });
-  }, []);
-
+const PriceRange = () => {
+  const [priceRange, setPriceRange] = React.useState("");
   const handleChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value);
+    setPriceRange(event.target.value);
   };
 
   return (
     <>
       <FormControl sx={{ m: 2, minWidth: 80, width: "14%" }}>
         <InputLabel id="demo-simple-select-autowidth-label">
-          Category
+          Price Range
         </InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
           id="demo-simple-select-autowidth"
-          value={category}
           onChange={handleChange}
           autoWidth
-          label="Category"
+          label="Price Range"
+          value={priceRange}
         >
           <MenuItem value="">
-            <em>-Select Category-</em>
+            <em>-Select Price Range-</em>
           </MenuItem>
-          {productsCategory.map((category, index) => (
-            <MenuItem key={index} value={category}>
-              {(category)}
-            </MenuItem>
-          ))}
+          <MenuItem value='0-100'>0-100</MenuItem>
+          <MenuItem value='100-200'>100-200</MenuItem>
+          <MenuItem value='200-300'>200-300</MenuItem>
+          <MenuItem value='300-400'>300-400</MenuItem>
         </Select>
       </FormControl>
     </>
   );
 };
 
-export default Category;
+export default PriceRange;
