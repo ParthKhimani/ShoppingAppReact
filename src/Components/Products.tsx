@@ -11,7 +11,7 @@ interface Product {
   productCategory: string;
 }
 
-interface Response {
+interface ProductsProps {
   products: Product[];
 }
 
@@ -23,31 +23,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const BasicGrid = () => {
-  const [products, setProducts] = React.useState<Product[]>([]);
-
-  React.useEffect(() => {
-    fetch("http://localhost:4444/getData", {
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((result: Response) => {
-        setProducts(result.products);
-        console.log(result.products);
-      });
-  }, []);
-
+const Products: React.FC<ProductsProps> = ({ products }) => {
   return (
     <Box sx={{ flexGrow: 1, width: "75%", margin: "0 auto" }}>
       <Grid container spacing={2}>
         {products.map((product, index) => (
           <Grid item xs={3} key={index}>
-            <Item>
-              Product Name: {product.productName}
-            </Item>
-            <Item>
-              Price : {product.productPrice}
-            </Item>
+            <Item>Product Name: {product.productName}</Item>
+            <Item>Price : {product.productPrice}</Item>
             <Button
               variant="outlined"
               sx={{ margin: "10px auto", width: "100%" }}
@@ -61,4 +44,4 @@ const BasicGrid = () => {
   );
 };
 
-export default BasicGrid;
+export default Products;

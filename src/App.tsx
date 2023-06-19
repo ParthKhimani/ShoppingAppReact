@@ -1,6 +1,7 @@
+import * as React from "react";
 import Navbar from "./Components/Navbar";
 import Category from "./Components/Category";
-import BasicGrid from "./Components/Products";
+import Products from "./Components/Products";
 import PriceRange from "./Components/PriceRange";
 import "./App.css";
 
@@ -12,7 +13,6 @@ const App = () => {
         <Category />
         <PriceRange />
       </div>
-      <BasicGrid />
     </>
   );
 };

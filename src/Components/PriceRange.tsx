@@ -3,9 +3,21 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+// import Products from "./Products";
+
+// interface Product {
+//   productName: string;
+//   productPrice: number;
+//   productCategory: string;
+// }
+
+// interface Response {
+//   products: Product[];
+// }
 
 const PriceRange = () => {
   const [priceRange, setPriceRange] = React.useState("");
+  // const [products, setProducts] = React.useState<Product[]>([]);
   const handleChange = (event: SelectChangeEvent) => {
     setPriceRange(event.target.value);
   };
@@ -27,12 +39,13 @@ const PriceRange = () => {
           <MenuItem value="">
             <em>-Select Price Range-</em>
           </MenuItem>
-          <MenuItem value='0-100'>0-100</MenuItem>
-          <MenuItem value='100-200'>100-200</MenuItem>
-          <MenuItem value='200-300'>200-300</MenuItem>
-          <MenuItem value='300-400'>300-400</MenuItem>
+          <MenuItem value="0-100">0-100</MenuItem>
+          <MenuItem value="100-200">100-200</MenuItem>
+          <MenuItem value="200-300">200-300</MenuItem>
+          <MenuItem value="300-400">300-400</MenuItem>
         </Select>
       </FormControl>
+      {/* <Products products={products} /> */}
     </>
   );
 };
