@@ -3,23 +3,17 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-// import Products from "./Products";
 
-// interface Product {
-//   productName: string;
-//   productPrice: number;
-//   productCategory: string;
-// }
+interface ChildProps {
+  sendPriceRange: (data: string) => void;
+}
 
-// interface Response {
-//   products: Product[];
-// }
-
-const PriceRange = () => {
+const PriceRange: React.FC<ChildProps> = ({ sendPriceRange }) => {
   const [priceRange, setPriceRange] = React.useState("");
-  // const [products, setProducts] = React.useState<Product[]>([]);
   const handleChange = (event: SelectChangeEvent) => {
-    setPriceRange(event.target.value);
+    const priceRange = event.target.value;
+    setPriceRange(priceRange);
+    sendPriceRange(priceRange);
   };
 
   return (
@@ -45,7 +39,6 @@ const PriceRange = () => {
           <MenuItem value="300-400">300-400</MenuItem>
         </Select>
       </FormControl>
-      {/* <Products products={products} /> */}
     </>
   );
 };

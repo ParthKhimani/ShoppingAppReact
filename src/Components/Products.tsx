@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import { MouseEvent } from "react";
 
 interface Product {
   productName: string;
@@ -24,6 +25,25 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Products: React.FC<ProductsProps> = ({ products }) => {
+  const [addToCart, setAddToCart] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    fetch("http://localhost:4444/addToCart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(addToCart),
+    }).then((response) => response.json());
+    // .then((result: Response) => {
+    //   setProducts(result.products);
+    // });
+  }, [addToCart]);
+
+  const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
+    const value = (event.target as HTMLButtonElement).value;
+    setAddToCart((prevState) => [...prevState, value]);
+  };
   return (
     <Box sx={{ flexGrow: 1, width: "75%", margin: "0 auto" }}>
       <Grid container spacing={2}>
@@ -34,6 +54,8 @@ const Products: React.FC<ProductsProps> = ({ products }) => {
             <Button
               variant="outlined"
               sx={{ margin: "10px auto", width: "100%" }}
+              onClick={handleAddToCart}
+              value={product.productName}
             >
               add to cart
             </Button>
