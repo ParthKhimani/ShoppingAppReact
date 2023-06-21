@@ -4,11 +4,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-interface ChildProps {
+interface PriceRangeProps {
   sendPriceRange: (data: string) => void;
 }
 
-const PriceRange: React.FC<ChildProps> = ({ sendPriceRange }) => {
+const PriceRange: React.FC<PriceRangeProps> = ({ sendPriceRange }) => {
   const [priceRange, setPriceRange] = React.useState("");
   const handleChange = (event: SelectChangeEvent) => {
     const priceRange = event.target.value;
@@ -37,6 +37,7 @@ const PriceRange: React.FC<ChildProps> = ({ sendPriceRange }) => {
           <MenuItem value="100-200">100-200</MenuItem>
           <MenuItem value="200-300">200-300</MenuItem>
           <MenuItem value="300-400">300-400</MenuItem>
+          <MenuItem value="400-500">400-500</MenuItem>
         </Select>
       </FormControl>
     </>

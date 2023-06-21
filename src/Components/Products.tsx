@@ -7,9 +7,12 @@ import Button from "@mui/material/Button";
 import { MouseEvent } from "react";
 
 interface Product {
+  _id: string;
   productName: string;
   productPrice: number;
   productCategory: string;
+  updatedPrice?: number;
+  productQuantity: number;
 }
 
 interface ProductsProps {
@@ -25,42 +28,49 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Products: React.FC<ProductsProps> = ({ products }) => {
-  const [addToCart, setAddToCart] = React.useState<string[]>([]);
+  const [cartItems, setCartItems] = React.useState<Set<string>>(() => {
+    const storedCartItems = localStorage.getItem("cartItems");
+    return storedCartItems ? new Set(JSON.parse(storedCartItems)) : new Set();
+  });
 
   React.useEffect(() => {
-    fetch("http://localhost:4444/addToCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(addToCart),
-    }).then((response) => response.json());
-    // .then((result: Response) => {
-    //   setProducts(result.products);
-    // });
-  }, [addToCart]);
+    localStorage.setItem("cartItems", JSON.stringify(Array.from(cartItems)));
+  }, [cartItems]);
 
   const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
     const value = (event.target as HTMLButtonElement).value;
-    setAddToCart((prevState) => [...prevState, value]);
+    if (cartItems.has(value)) {
+      setCartItems((prevItems) => {
+        const updatedItems = new Set(prevItems);
+        updatedItems.delete(value);
+        return updatedItems;
+      });
+    } else {
+      setCartItems((prevItems) => new Set(prevItems).add(value));
+    }
   };
+
   return (
     <Box sx={{ flexGrow: 1, width: "75%", margin: "0 auto" }}>
       <Grid container spacing={2}>
-        {products.map((product, index) => (
-          <Grid item xs={3} key={index}>
-            <Item>Product Name: {product.productName}</Item>
-            <Item>Price : {product.productPrice}</Item>
-            <Button
-              variant="outlined"
-              sx={{ margin: "10px auto", width: "100%" }}
-              onClick={handleAddToCart}
-              value={product.productName}
-            >
-              add to cart
-            </Button>
-          </Grid>
-        ))}
+        {products.map((product, index) => {
+          const isItemInCart = cartItems.has(JSON.stringify(product));
+          const buttonText = isItemInCart ? "Remove from Cart" : "Add to Cart";
+          return (
+            <Grid item xs={3} key={index}>
+              <Item>Product Name: {product.productName}</Item>
+              <Item>Price: {product.productPrice}</Item>
+              <Button
+                variant="outlined"
+                sx={{ margin: "10px auto", width: "100%" }}
+                onClick={handleAddToCart}
+                value={JSON.stringify(product)}
+              >
+                {buttonText}
+              </Button>
+            </Grid>
+          );
+        })}
       </Grid>
     </Box>
   );

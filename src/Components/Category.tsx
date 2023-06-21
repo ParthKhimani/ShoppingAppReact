@@ -4,11 +4,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-interface ChildProps {
+interface CategoryProps {
   sendCategory: (data: string) => void;
 }
 
-const Category: React.FC<ChildProps> = ({ sendCategory }) => {
+const Category: React.FC<CategoryProps> = ({ sendCategory }) => {
   const [category, setCategory] = useState({ category: "" });
   const [productsCategory, setProductsCategory] = useState<string[]>([]);
 

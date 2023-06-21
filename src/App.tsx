@@ -6,9 +6,11 @@ import PriceRange from "./Components/PriceRange";
 import "./App.css";
 
 interface Product {
+  _id: string;
   productName: string;
   productPrice: number;
   productCategory: string;
+  productQuantity: number;
 }
 
 interface Response {
@@ -32,27 +34,23 @@ const App = () => {
   };
 
   React.useEffect(() => {
-    if (filter.category !== "" && filter.priceRange !== "") {
-      fetch("http://localhost:4444/setFilter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(filter),
-      })
-        .then((response) => response.json())
-        .then((result: Response) => {
-          setProducts(result.products);
-        });
-    } else {
-      fetch("http://localhost:4444/getData", {
-        method: "POST",
-      })
-        .then((response) => response.json())
-        .then((result: Response) => {
-          setProducts(result.products);
-        });
+    let url = "http://localhost:4444/getData";
+
+    if (filter.category !== "" || filter.priceRange !== "") {
+      url = "http://localhost:4444/setFilter";
     }
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(filter),
+    })
+      .then((response) => response.json())
+      .then((result: Response) => {
+        setProducts(result.products);
+      });
   }, [filter]);
 
   return (
