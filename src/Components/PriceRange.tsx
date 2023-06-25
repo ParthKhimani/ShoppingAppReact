@@ -33,11 +33,13 @@ const PriceRange: React.FC<PriceRangeProps> = ({ sendPriceRange }) => {
           <MenuItem value="">
             <em>-Select Price Range-</em>
           </MenuItem>
-          <MenuItem value="0-100">0-100</MenuItem>
-          <MenuItem value="100-200">100-200</MenuItem>
-          <MenuItem value="200-300">200-300</MenuItem>
-          <MenuItem value="300-400">300-400</MenuItem>
-          <MenuItem value="400-500">400-500</MenuItem>
+          <MenuItem value="0-300">0-300</MenuItem>
+          <MenuItem value="300-600">300-600</MenuItem>
+          <MenuItem value="600-900">600-900</MenuItem>
+          <MenuItem value="900-1200">900-1200</MenuItem>
+          <MenuItem value="1200-1500">1200-1500</MenuItem>
+          <MenuItem value="1500-1800">1500-1800</MenuItem>
+          <MenuItem value="1800-2000">1800-2000</MenuItem>
         </Select>
       </FormControl>
     </>

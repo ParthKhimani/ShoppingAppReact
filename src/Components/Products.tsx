@@ -28,25 +28,31 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Products: React.FC<ProductsProps> = ({ products }) => {
-  const [cartItems, setCartItems] = React.useState<Set<string>>(() => {
+  const [cartItems, setCartItems] = React.useState<string[]>(() => {
     const storedCartItems = localStorage.getItem("cartItems");
-    return storedCartItems ? new Set(JSON.parse(storedCartItems)) : new Set();
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
 
   React.useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(Array.from(cartItems)));
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
   const handleAddToCart = (event: MouseEvent<HTMLButtonElement>) => {
     const value = (event.target as HTMLButtonElement).value;
-    if (cartItems.has(value)) {
-      setCartItems((prevItems) => {
-        const updatedItems = new Set(prevItems);
-        updatedItems.delete(value);
-        return updatedItems;
-      });
+    const product: Product = JSON.parse(value);
+    const isItemInCart = cartItems.some((item) => {
+      const parsedItem: Product = JSON.parse(item);
+      return parsedItem._id === product._id;
+    });
+    if (isItemInCart) {
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => {
+          const parsedItem: Product = JSON.parse(item);
+          return parsedItem._id !== product._id;
+        })
+      );
     } else {
-      setCartItems((prevItems) => new Set(prevItems).add(value));
+      setCartItems((prevItems) => [...prevItems, value]);
     }
   };
 
@@ -54,14 +60,19 @@ const Products: React.FC<ProductsProps> = ({ products }) => {
     <Box sx={{ flexGrow: 1, width: "75%", margin: "0 auto" }}>
       <Grid container spacing={2}>
         {products.map((product, index) => {
-          const isItemInCart = cartItems.has(JSON.stringify(product));
+          const isItemInCart = cartItems.some((item) => {
+            const parsedItem: Product = JSON.parse(item);
+            return parsedItem._id === product._id;
+          });
           const buttonText = isItemInCart ? "Remove from Cart" : "Add to Cart";
+          const buttonColor = isItemInCart ? "error" : "success";
           return (
             <Grid item xs={3} key={index}>
               <Item>Product Name: {product.productName}</Item>
               <Item>Price: {product.productPrice}</Item>
               <Button
                 variant="outlined"
+                color={buttonColor}
                 sx={{ margin: "10px auto", width: "100%" }}
                 onClick={handleAddToCart}
                 value={JSON.stringify(product)}

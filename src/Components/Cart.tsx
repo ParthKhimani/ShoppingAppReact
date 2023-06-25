@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -12,6 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import StripeCheckout from "react-stripe-checkout";
 
 const style = {
   position: "absolute" as "absolute",
@@ -26,28 +27,64 @@ const style = {
 };
 
 const Cart = () => {
-  const [open, setOpen] = React.useState(false);
-  const cartItems: string[] =
-    JSON.parse(localStorage.getItem("cartItems")!) || [];
+  const [open, setOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<string[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    const storedCartItems =
+      JSON.parse(localStorage.getItem("cartItems")!) || [];
+    setCartItems(storedCartItems);
+  }, [open]);
+
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      let total = 0;
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = JSON.parse(cartItems[i]);
+        const price = item.updatedPrice || item.productPrice;
+        total += price;
+      }
+      setTotalPrice(total);
+    };
+    calculateTotalPrice();
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleIncrement = (index: number) => {
     const updatedCartItems = [...cartItems];
     const item = JSON.parse(updatedCartItems[index]);
-    item.updatedPrice += item.productPrice;
-    item.updatedQuantity += item.productQuantity;
+    item.updatedQuantity =
+      (item.updatedQuantity || item.productQuantity || 1) + 1;
+    item.updatedPrice = item.updatedQuantity * item.productPrice;
     updatedCartItems[index] = JSON.stringify(item);
+    setCartItems(updatedCartItems);
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
   const handleDecrement = (index: number) => {
     const updatedCartItems = [...cartItems];
     const item = JSON.parse(updatedCartItems[index]);
-    item.updatedPrice -= item.productPrice;
-    item.updatedQuantity -= item.productQuantity;
-    updatedCartItems[index] = JSON.stringify(item);
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    if (item.updatedQuantity > 1) {
+      item.updatedQuantity = item.updatedQuantity - 1;
+      item.updatedPrice = item.updatedQuantity * item.productPrice;
+      updatedCartItems[index] = JSON.stringify(item);
+      setCartItems(updatedCartItems);
+      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    }
+  };
+
+  const handleToken = (token: any) => {
+    fetch("http://localhost:4444/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(token),
+    });
   };
 
   return (
@@ -65,7 +102,7 @@ const Cart = () => {
           </Typography>
           {cartItems.length === 0 ? (
             <Typography variant="body1" component="p" style={{ color: "red" }}>
-              Your cart is empty !
+              Your cart is empty!
             </Typography>
           ) : (
             <TableContainer>
@@ -89,7 +126,9 @@ const Cart = () => {
                     const displayedPrice =
                       updatedPrice !== undefined ? updatedPrice : productPrice;
                     const displayedQuantity =
-                      updatedQuantity !== 1 ? updatedQuantity : productQuantity;
+                      updatedQuantity !== undefined && updatedQuantity !== null
+                        ? updatedQuantity
+                        : productQuantity || 1;
 
                     return (
                       <TableRow key={index}>
@@ -107,6 +146,21 @@ const Cart = () => {
                       </TableRow>
                     );
                   })}
+                </TableBody>
+                <TableBody>
+                  <TableCell colSpan={2} style={{ textAlign: "right" }}>
+                    Total:
+                  </TableCell>
+                  <TableCell>{totalPrice}</TableCell>
+                </TableBody>
+                <TableBody>
+                  <TableCell colSpan={3} style={{ textAlign: "center" }}>
+                    <StripeCheckout
+                      stripeKey="pk_test_51MlQ9rSBkF0GV1OMdvNLM0fm846jtPwBTVCuGA4m3r693YUcdCbnWzDfLcaYShzpHfN2GcChuB9UI0RFvkQjz8sc00GhJ2Ykj7"
+                      token={handleToken}
+                      amount={totalPrice * 100}
+                    />
+                  </TableCell>
                 </TableBody>
               </Table>
             </TableContainer>
