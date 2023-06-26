@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import StripeCheckout from "react-stripe-checkout";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute" as "absolute",
@@ -78,13 +79,22 @@ const Cart = () => {
   };
 
   const handleToken = (token: any) => {
+    const data = { token, amount: totalPrice };
     fetch("http://localhost:4444/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify(token),
-    });
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        const status = result.status;
+        if (status == 200) {
+          const navigate = useNavigate();
+          navigate("/dashboard");
+        }
+      });
   };
 
   return (

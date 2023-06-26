@@ -71,7 +71,7 @@ const Products: React.FC<ProductsProps> = ({ products }) => {
               <Item>Product Name: {product.productName}</Item>
               <Item>Price: {product.productPrice}</Item>
               <Button
-                variant="outlined"
+                variant="contained"
                 color={buttonColor}
                 sx={{ margin: "10px auto", width: "100%" }}
                 onClick={handleAddToCart}
