@@ -31,6 +31,7 @@ const Cart = () => {
   const [open, setOpen] = useState(false);
   const [cartItems, setCartItems] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedCartItems =
@@ -90,9 +91,24 @@ const Cart = () => {
       .then((response) => response.json())
       .then((result) => {
         const status = result.status;
+        const emailId = result.customer_email_id;
+        const amount = result.amount;
+
         if (status == 200) {
-          const navigate = useNavigate();
           navigate("/dashboard");
+          const payments = localStorage.getItem("payments");
+          let paymentsArray = [];
+
+          if (payments) {
+            paymentsArray = JSON.parse(payments);
+          }
+
+          const newPayment = { emailId: emailId, amount: amount };
+          paymentsArray.push(JSON.stringify(newPayment));
+
+          localStorage.setItem("payments", JSON.stringify(paymentsArray));
+        } else {
+          navigate("error-page");
         }
       });
   };

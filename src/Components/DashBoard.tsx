@@ -1,8 +1,11 @@
 import * as React from "react";
+import { Link } from "@mui/joy";
+import Modal from "@mui/material/Modal";
 import Navbar from "../Components/Navbar";
 import Category from "../Components/Category";
 import Products from "../Components/Products";
 import PriceRange from "../Components/PriceRange";
+import PaymentHistory from "./PaymentHistory";
 
 interface Product {
   _id: string;
@@ -19,6 +22,7 @@ interface Response {
 const DashBoard = () => {
   const [filter, setFilter] = React.useState({ category: "", priceRange: "" });
   const [products, setProducts] = React.useState<Product[]>([]);
+
   const handleCategoryFilter = (category: string) => {
     setFilter((prevState) => ({
       ...prevState,
@@ -51,9 +55,13 @@ const DashBoard = () => {
         setProducts(result.products);
       });
   }, [filter]);
+
   return (
     <>
       <Navbar />
+      <div className="right">
+        <PaymentHistory />
+      </div>
       <div className="center">
         <Category sendCategory={handleCategoryFilter} />
         <PriceRange sendPriceRange={handlePriceRangeFilter} />

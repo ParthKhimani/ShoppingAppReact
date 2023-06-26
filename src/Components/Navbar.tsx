@@ -29,6 +29,7 @@ const Navbar = () => {
           >
             Shopping Website
           </Typography>
+
           <div className="shoppingCart">
             <Cart />
           </div>
