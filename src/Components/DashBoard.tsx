@@ -1,6 +1,4 @@
 import * as React from "react";
-import { Link } from "@mui/joy";
-import Modal from "@mui/material/Modal";
 import Navbar from "../Components/Navbar";
 import Category from "../Components/Category";
 import Products from "../Components/Products";
