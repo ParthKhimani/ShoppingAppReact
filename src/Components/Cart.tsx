@@ -95,7 +95,7 @@ const Cart = () => {
         const amount = result.amount;
 
         if (status == 200) {
-          navigate("/dashboard");
+          navigate("/");
           const payments = localStorage.getItem("payments");
           let paymentsArray = [];
 
