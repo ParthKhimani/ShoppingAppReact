@@ -13,7 +13,7 @@ const Category: React.FC<CategoryProps> = ({ sendCategory }) => {
   const [productsCategory, setProductsCategory] = useState<string[]>([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:4444/getCategory", {
+    fetch(`${process.env.REACT_APP_BASE_URL}/getCategory`, {
       method: "POST",
     })
       .then((response) => response.json())

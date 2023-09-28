@@ -35,10 +35,10 @@ const DashBoard = () => {
   };
 
   React.useEffect(() => {
-    let url = "http://localhost:4444/getData";
+    let url = `${process.env.REACT_APP_BASE_URL}/getData`;
 
     if (filter.category !== "" || filter.priceRange !== "") {
-      url = "http://localhost:4444/setFilter";
+      url = `${process.env.REACT_APP_BASE_URL}/setFilter`;
     }
 
     fetch(url, {

@@ -81,7 +81,7 @@ const Cart = () => {
 
   const handleToken = (token: any) => {
     const data = { token, amount: totalPrice };
-    fetch("http://localhost:4444/checkout", {
+    fetch(`${process.env.REACT_APP_BASE_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
