@@ -67,7 +67,7 @@ const Products: React.FC<ProductsProps> = ({ products }) => {
           const buttonText = isItemInCart ? "Remove from Cart" : "Add to Cart";
           const buttonColor = isItemInCart ? "error" : "success";
           return (
-            <Grid item xs={3} key={index}>
+            <Grid item xs={6} md={4} lg={3} xl={2} key={index}>
               <Item>Product Name: {product.productName}</Item>
               <Item>Price: {product.productPrice}</Item>
               <Button
