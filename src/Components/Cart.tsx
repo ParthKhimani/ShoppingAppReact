@@ -115,7 +115,7 @@ const Cart = () => {
 
   return (
     <div>
-      <ShoppingCartIcon onClick={handleOpen} />
+      <ShoppingCartIcon onClick={handleOpen} style={{ cursor: "pointer" }} />
       <Modal
         open={open}
         onClose={handleClose}

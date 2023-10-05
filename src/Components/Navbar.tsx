@@ -3,36 +3,17 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
 import Cart from "./Cart";
-import "./Navbar.css";
 
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
+      <AppBar>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6" noWrap component="div">
             Shopping Website
           </Typography>
-
-          <div className="shoppingCart">
-            <Cart />
-          </div>
+          <Cart />
         </Toolbar>
       </AppBar>
     </Box>
