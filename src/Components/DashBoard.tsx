@@ -3,7 +3,6 @@ import Navbar from "../Components/Navbar";
 import Category from "../Components/Category";
 import Products from "../Components/Products";
 import PriceRange from "../Components/PriceRange";
-import PaymentHistory from "./PaymentHistory";
 
 interface Product {
   _id: string;
@@ -57,9 +56,6 @@ const DashBoard = () => {
   return (
     <>
       <Navbar />
-      <div className="right">
-        <PaymentHistory />
-      </div>
       <div className="center">
         <Category sendCategory={handleCategoryFilter} />
         <PriceRange sendPriceRange={handlePriceRangeFilter} />

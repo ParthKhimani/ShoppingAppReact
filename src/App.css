@@ -2,9 +2,13 @@
   display: flex;
   justify-content: center;
   margin: 25px 0px;
+  margin-top: 60px;
 }
-.right {
-  display: flex;
-  justify-content: end;
-  margin: 25px;
+
+@media (max-width: 600px) {
+  .nav-items {
+    flex-direction: column;
+    display: flex;
+    align-items: start;
+  }
 }

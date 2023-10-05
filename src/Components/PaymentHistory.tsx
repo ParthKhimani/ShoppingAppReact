@@ -38,10 +38,9 @@ const PaymentHistory = () => {
   return (
     <>
       <Link
-        color="primary"
+        style={{ color: "white" }}
         level="body1"
         underline="none"
-        variant="outlined"
         component="button"
         onClick={openModal}
       >
